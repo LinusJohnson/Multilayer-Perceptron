@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="d3viz\css/d3viz.css"/>
+	<link rel="stylesheet" href="d3viz\css/d3-context-menu.css"/>
+	<script type="text/javascript" src="d3viz\js/d3viz.js"></script>
+	<script type="text/javascript" src="d3viz\js/d3.v3.min.js"></script>
+	<script type="text/javascript" src="d3viz\js/dagre-d3.min.js"></script>
+	<script type="text/javascript" src="d3viz\js/graphlib-dot.min.js"></script>
+	<script type="text/javascript" src="d3viz\js/d3-context-menu.js"></script>
+</head>
+<body>
+	<div id='menu' class='menuBar'>
+	    <input name="resetNodes" 
+	           type="button" 
+	           value="Reset nodes"
+	           onclick="resetNodes()"/>
+	    <input name="releaseNodes" 
+	           type="button" 
+	           value="Release nodes"
+	           onclick="releaseNodes()"/>
+	</div>
+
+	<script type="text/javascript">
+		// Backend graph in DOT format
+		var dotGraph = graphlibDot.read("digraph G {	graph [bb=\"0,0,266.74,471\"];	node [label=\"\N\"];	n1	 [apply_op=DimShuffle,		height=0.5,		label=DimShuffle,		node_type=apply,		pos=\"214.74,366\",		shape=ellipse,		width=1.4443];	n8	 [apply_op=Elemwise,		fillcolor=\"#FFAABB\",		height=0.5,		label=Elemwise,		node_type=apply,		pos=\"166.74,279\",		shape=ellipse,		style=filled,		type=colored,		width=1.2457];	n1 -> n8	 [label=\"1 dmatrix\",		lp=\"219.24,322.5\",		pos=\"e,176.21,296.76 205.26,348.21 198.42,336.1 189.07,319.53 181.29,305.76\"];	n2	 [dtype=dvector,		fillcolor=YellowGreen,		height=0.5,		label=dvector,		node_type=shared_input,		pos=\"214.74,453\",		shape=box,		style=filled,		width=0.81944];	n2 -> n1	 [color=dodgerblue,		label=dvector,		lp=\"236.24,409.5\",		pos=\"e,214.74,384.18 214.74,434.8 214.74,423.16 214.74,407.55 214.74,394.24\"];	n4	 [apply_op=Dot22,		height=0.5,		label=Dot22,		node_type=apply,		pos=\"111.74,366\",		shape=ellipse,		width=0.92075];	n4 -> n8	 [color=red,		label=\"0 dmatrix\",		lp=\"157.24,322.5\",		pos=\"e,147.89,295.38 116.2,347.92 119.32,337.83 124.11,325.09 130.74,315 133.6,310.65 137.09,306.42 140.75,302.5\"];	n5	 [dtype=dmatrix,		fillcolor=limegreen,		height=0.5,		label=x,		node_type=input,		pos=\"48.743,453\",		shape=box,		style=filled,		width=0.75];	n5 -> n4	 [label=\"0 dmatrix\",		lp=\"87.243,409.5\",		pos=\"e,87.694,378.51 49.824,434.54 51.175,424.31 54.167,411.56 60.743,402 65.493,395.09 72.086,389.15 78.958,384.21\"];	n6	 [dtype=dmatrix,		fillcolor=YellowGreen,		height=0.5,		label=dmatrix,		node_type=shared_input,		pos=\"124.74,453\",		shape=box,		style=filled,		width=0.81944];	n6 -> n4	 [label=\"1 dmatrix\",		lp=\"145.24,409.5\",		pos=\"e,114.37,384.18 122.11,434.8 120.33,423.16 117.94,407.55 115.91,394.24\"];	n10	 [apply_op=Dot22,		height=0.5,		label=Dot22,		node_type=apply,		pos=\"116.74,192\",		shape=ellipse,		width=0.92075];	n8 -> n10	 [label=\"0 dmatrix\",		lp=\"170.24,235.5\",		pos=\"e,126.43,209.47 156.86,261.21 149.63,248.9 139.68,232 131.5,218.09\"];	n13	 [apply_op=SoftmaxWithBias,		height=0.5,		label=SoftmaxWithBias,		node_type=apply,		pos=\"74.743,105\",		shape=ellipse,		width=2.0762];	n10 -> n13	 [label=\"0 dmatrix\",		lp=\"126.24,148.5\",		pos=\"e,83.627,123.04 108.86,174.28 104.23,164.54 98.229,152.04 92.743,141 91.284,138.06 89.738,135 88.191,131.95\"];	n11	 [dtype=dmatrix,		fillcolor=YellowGreen,		height=0.5,		label=dmatrix,		node_type=shared_input,		pos=\"74.743,279\",		shape=box,		style=filled,		width=0.81944];	n11 -> n10	 [label=\"1 dmatrix\",		lp=\"110.24,235.5\",		pos=\"e,99.449,207.5 75.431,260.56 76.41,250.58 78.66,238.08 83.743,228 86.081,223.37 89.228,218.92 92.655,214.84\"];	n15	 [dtype=dmatrix,		fillcolor=dodgerblue,		height=0.5,		label=dmatrix,		node_type=output,		pos=\"74.743,18\",		shape=box,		style=filled,		width=0.81944];	n13 -> n15	 [label=dmatrix,		lp=\"96.243,61.5\",		pos=\"e,74.743,36.175 74.743,86.799 74.743,75.163 74.743,59.548 74.743,46.237\"];	n14	 [dtype=dvector,		fillcolor=YellowGreen,		height=0.5,		label=dvector,		node_type=shared_input,		pos=\"35.743,192\",		shape=box,		style=filled,		width=0.81944];	n14 -> n13	 [label=\"1 dvector\",		lp=\"65.743,148.5\",		pos=\"e,52.709,122.43 33.765,173.59 33.356,163.62 34.106,151.12 38.743,141 40.541,137.08 42.989,133.36 45.77,129.92\"];}");
+		// Frontend graph for visualization
+		var graph = {};
+		
+		var forceLayout;
+		var isProfiled = false; // true if profiling information available
+		var useProfileColors = false;
+		var fixOnInit = true; // fix nodes on initialization
+		var maxProfilePer = 0;
+		var profileColors = ["#fff5f0","#fee0d2","#fcbba1","#fc9272","#fb6a4a","#ef3b2c","#cb181d","#a50f15"];
+		var pad = 10;
+		var isEditNode = false; // true if node is edited
+		var menuItems = [
+			{
+				title: 'Edit',
+				action: function(elm, d, i) { editNode(elm, d); }
+			},
+			{
+				title: 'Release',
+				action: function(elm, d, i) { releaseNode(d); }
+			}
+		];
+
+		// Create main panel
+		d3.select('body').select('svg').remove();
+		var svg = d3.select('body').append('svg')
+			.attr('width', '100%')
+			.attr('height', '95%');
+		var pane = svg.append('g');
+		
+		// Zoom behaviour
+		var zoom = d3.behavior.zoom()
+			.scaleExtent([0.2, 8])
+			.on('zoom', function(d) {
+				var trans = d3.event.translate;
+				trans[0] += 300;
+				trans[1] += 100;
+				pane.attr('transform', 'translate(' + trans + ') scale(' + d3.event.scale + ')');
+			});
+		svg.call(zoom);
+		zoom.event(svg);
+		svg.on("dblclick.zoom", null);
+		
+		// Edges
+		var edgeDiv = d3.select('body').append('div')
+			.attr('class', 'edgeTooltip')
+			.style('opacity', 0.0);
+		
+		// Div for node details	
+		var nodeInfo = d3.select('body').append('div')
+			.attr('class', 'nodeInfo')
+			.style('opacity', 0.0);
+		
+		// Definition head of edges
+		var markerData = [
+			{'id': 'n', 'color': 'black'},
+			{'id': 'r', 'color': 'red'},
+			{'id': 'b', 'color': 'dodgerblue'}];
+		svg.append("defs").selectAll('marker').data(markerData).enter().append("marker")
+		    .attr("id", function(d) { return 'edgeArrow_' + d.id;})
+		    .attr("markerWidth", 4)
+		    .attr("markerHeight", 4)
+		    .attr("refX", 2)
+		    .attr("refY", 2)
+		    .attr("orient", "auto")
+		  	.append("path")
+		    .attr("d", "M0,0 L4,2 L0,4 Z")
+		    .attr('fill', function(d) { return d.color;});
+	
+		// Initialize graph
+		processDotGraph(dotGraph);		
+		graph = frontEndGraph(dotGraph);
+		drawGraph();
+	</script>
+</body>
+</html>
