@@ -85,7 +85,7 @@ class MLP(object):
                                 )
         #print theano.printing.debugprint(train)
         #theano.printing.pydotprint(train, outfile="symbolic_graph_of_nn_opt.svg", format='svg', var_with_name_simple=True)
-        #d3v.d3viz(train, 'd3viz/mlp.html')
+        d3v.d3viz(train, 'd3viz/mlp.html')
         return train
 
     def predict(self):
